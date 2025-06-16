@@ -3,20 +3,21 @@ import path from 'path';
 /**
  * Strapi database configuration
  * ─────────────────────────────
- * Default client is mysql; override via DATABASE_CLIENT
- * or add env-specific files under config/env/*.
+ * Uses `env()` helpers injected by Strapi’s config loader.
+ * Default client is mysql2; override via DATABASE_CLIENT
+ * or by creating an environment-specific file under config/env/.
  */
 export default ({ env }) => {
-  const client = env('DATABASE_CLIENT', 'mysql');   // mysql | postgres | sqlite
+  // mysql2 is the recommended driver for MySQL ≥5.7 / MariaDB ≥10.4
+  const client = env('DATABASE_CLIENT', 'mysql');
 
   const connections = {
-    /* ——— MySQL / MariaDB ——— */
-    mysql: {                         // ← rename key from mysql2 → mysql
+    mysql2: {
       connection: {
         host: env('DATABASE_HOST', '127.0.0.1'),
         port: env.int('DATABASE_PORT', 3306),
         database: env('DATABASE_NAME', 'strapi_dev'),
-        user: env('DATABASE_USERNAME', 'strapi'),   // field must be `user`
+        user: env('DATABASE_USERNAME', 'strapi'),
         password: env('DATABASE_PASSWORD', 'strapi'),
         ssl:
           env.bool('DATABASE_SSL', false) && {
@@ -37,7 +38,6 @@ export default ({ env }) => {
       },
     },
 
-    /* ——— PostgreSQL ——— */
     postgres: {
       connection: {
         connectionString: env('DATABASE_URL'),
@@ -66,7 +66,6 @@ export default ({ env }) => {
       },
     },
 
-    /* ——— SQLite ——— */
     sqlite: {
       connection: {
         filename: path.join(
@@ -83,7 +82,7 @@ export default ({ env }) => {
   return {
     connection: {
       client,
-      ...connections[client],          // now resolves correctly
+      ...connections[client],
       acquireConnectionTimeout: env.int('DATABASE_CONNECTION_TIMEOUT', 60_000),
     },
   };
