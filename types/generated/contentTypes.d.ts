@@ -384,7 +384,6 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    category: Schema.Attribute.String;
     content: Schema.Attribute.Blocks;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -398,6 +397,7 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
       'api::article.article'
     > &
       Schema.Attribute.Private;
+    news_category: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     sourceName: Schema.Attribute.String;
     sourceUrl: Schema.Attribute.String;

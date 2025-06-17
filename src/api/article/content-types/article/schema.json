@@ -40,7 +40,7 @@
     "sourceWebsite": {
       "type": "string"
     },
-    "category": {
+    "news_category": {
       "type": "string"
     }
   }
