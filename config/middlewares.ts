@@ -1,7 +1,27 @@
+// config/middlewares.ts
 export default [
   'strapi::logger',
   'strapi::errors',
-  'strapi::security',
+
+  /* -------------------------------------------------
+   * Security middleware — add CKEditor CSP directives
+   * ------------------------------------------------- */
+  {
+    name: 'strapi::security',
+    config: {
+      contentSecurityPolicy: {
+        useDefaults: true,
+        directives: {
+          /* allow the CKEditor CDN script itself */
+          'script-src': ["'self'", 'https://cdn.ckeditor.com'],
+
+          /* allow the event-proxy endpoint CKEditor uses */
+          'connect-src': ["'self'", 'https://proxy-event.ckeditor.com'],
+        },
+      },
+    },
+  },
+
   'strapi::cors',
   'strapi::poweredBy',
   'strapi::query',
@@ -10,3 +30,4 @@ export default [
   'strapi::favicon',
   'strapi::public',
 ];
+
